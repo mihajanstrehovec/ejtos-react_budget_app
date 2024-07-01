@@ -9,15 +9,18 @@ import Budget from './components/Budget';
 
 
 import { AppProvider } from './context/AppContext';
+import { Provider } from 'react-redux';
 import Remaining from './components/Remaining';
 import ExpenseTotal from './components/ExpenseTotal';
 import ExpenseList from './components/ExpenseList';
 import ExpenseItem from './components/ExpenseItem';
 import AllocationForm from './components/AllocationForm';
 import ChangeCurrency from './components/ChangeCurrency';
+import { store } from './context/store';
+
 const App = () => {
     return (
-        <AppProvider>
+        <Provider store={store}>
             <div className='container'>
                 <h1 className='mt-3'>Company's Budget Allocation</h1>
                 <div className='row mt-3'>
@@ -40,10 +43,10 @@ const App = () => {
                     <h2 className='mt-3'>Chage Allocation</h2>
                     <div className='row'>
                         <AllocationForm/>
-                    </div>
+                    </div> 
                 </div>
             </div>
-        </AppProvider>
+        </Provider>
     );
 };
 export default App;

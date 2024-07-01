@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import ExpenseItem from './ExpenseItem';
 import { AppContext } from '../context/AppContext';
+import { useSelector } from 'react-redux';
 
 const ExpenseList = () => {
-    const { expenses } = useContext(AppContext);
-
+    // const { expenses } = useContext(AppContext);
+    const expenses = useSelector((state) => state.budget.expenses)
+  console.log(expenses)
     return (
         <table className='table'>
               <thead className="thead-light">

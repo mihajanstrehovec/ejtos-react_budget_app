@@ -1,15 +1,27 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { addExpense, reduceExpense } from '../context/AppContextRedux';
 
 const AllocationForm = (props) => {
-    const { dispatch, remaining, currency  } = useContext(AppContext);
+    const budget = useSelector((state) => state.budget.budget)
+    const currency = useSelector((state) => state.budget.currency)
+    const expenses = useSelector((state) => state.budget.expenses)
+    const dispatch = useDispatch()
+
+    const totalExpenses = expenses.reduce((total, item) => {
+        return (total += item.cost);
+    }, 0);
+    
+    let remaining = budget - totalExpenses
 
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
 
     const submitEvent = () => {
-
+        console.log("remaingin", remaining)
+        console.log("cost", cost)
         if(cost > remaining) {
             alert("The value cannot exceed remaining funds  £"+remaining);
             setCost("");
@@ -20,17 +32,11 @@ const AllocationForm = (props) => {
             name: name,
             cost: parseInt(cost),
         };
+
         if(action === "Reduce") {
-            dispatch({
-                type: 'RED_EXPENSE',
-                payload: expense,
-            });
-        } else {
-                dispatch({
-                    type: 'ADD_EXPENSE',
-                    payload: expense,
-                });
-            }
+            dispatch(reduceExpense(expense))
+        } else dispatch(addExpense(expense))
+
     };
 
     return (
@@ -67,6 +73,7 @@ const AllocationForm = (props) => {
                         id='cost'
                         value={cost}
                         style={{size: 10}}
+                        step={10}
                         onChange={(event) => setCost(event.target.value)}>
                     </input>
                  

@@ -1,19 +1,15 @@
 import React, { useContext } from 'react';
 import { TiDelete } from 'react-icons/ti';
 import { AppContext } from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { addExpense, deleteExpense } from '../context/AppContextRedux';
 
 const ExpenseItem = (props) => {
-    const { dispatch, currency } = useContext(AppContext);
+    const currency = useSelector((state) => state.budget.currency)
+    const dispatch = useDispatch()
 
     const handleDeleteExpense = (name) => {
-        const expense = {
-            name: name,
-            cost: 10,
-        };
-        dispatch({
-            type: 'RED_EXPENSE',
-            payload: expense,
-        });
+        dispatch(deleteExpense(name))
     };
 
     const increaseAllocation = (name) => {
@@ -22,10 +18,7 @@ const ExpenseItem = (props) => {
             cost: 10,
         };
 
-        dispatch({
-            type: 'ADD_EXPENSE',
-            payload: expense
-        });
+        dispatch(addExpense(expense))
 
     }
 
